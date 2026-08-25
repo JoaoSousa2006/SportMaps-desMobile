@@ -8,13 +8,12 @@ import meunome from "./assets/forme"
 function App() {
   //const [count, setCount] = useState(0)
 
+  <h1>Hello  World</h1>
+  
   return (
     <>
-    <div className='container'>
-      <img src={viteLogo} className="logo" alt="Vite Logo"/>
-      <img src={reactLogo} className="logo" alt="React Logo"/>
-      <h1>{meunome()}</h1>
-    </div>
+
+    <h1>Hello  World 2</h1>
     </>
   )
 }
