@@ -17,8 +17,27 @@ body {
 .logo {
     height: 300px;
     width: 300px;
-}
-
-.container>h1 {
-    color: black;
-}
+.app-shell { min-height: 100vh; background: #f7f7f5; color: #252525; }
+.topbar { height: 64px; padding: 0 7vw; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e5e1; background: #fff; }
+.brand { display: flex; align-items: center; gap: 9px; color: #1d1d1b; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-decoration: none; }
+.brand-mark { display: grid; place-items: center; width: 27px; height: 27px; border-radius: 50%; background: #2b579a; color: #fff; font-size: 12px; letter-spacing: -1px; }
+nav { display: flex; gap: 25px; }
+.nav-link { padding: 23px 0 21px; color: #777773; font-size: 13px; text-decoration: none; }
+.nav-link.active { color: #2b579a; border-bottom: 2px solid #2b579a; }
+.content { width: min(680px, calc(100% - 40px)); margin: 0 auto; padding: 72px 0 56px; }
+.intro { margin-bottom: 46px; }
+.eyebrow { margin: 0 0 15px; color: #2b579a; font-size: 11px; font-weight: 700; letter-spacing: 1.7px; }
+h1 { margin: 0 0 10px; color: #20201e; font-size: 42px; font-weight: 500; letter-spacing: -1px; }
+.subtitle { color: #777773; font-size: 15px; }
+.toolbar { display: flex; align-items: center; justify-content: space-between; padding: 0 0 13px; border-bottom: 1px solid #d9d9d4; }
+.toolbar label { color: #777773; font-size: 12px; }
+select { min-width: 165px; padding: 8px 28px 8px 10px; border: 1px solid #d0d0cb; border-radius: 3px; background: #fff; color: #343432; font: inherit; font-size: 13px; }
+.meeting { display: grid; grid-template-columns: 170px 1fr 38px; gap: 25px; align-items: center; min-height: 112px; border-bottom: 1px solid #e2e2de; }
+.meeting-date { display: flex; flex-direction: column; gap: 5px; color: #777773; font-size: 13px; }
+.meeting-date strong { color: #343432; font-size: 14px; font-weight: 600; }
+.meeting-info h2 { margin: 0 0 6px; color: #252523; font-size: 17px; font-weight: 600; }
+.meeting-info p { margin: 0; color: #777773; font-size: 13px; }
+.details-button { width: 34px; height: 34px; border: 1px solid #d0d0cb; border-radius: 50%; background: transparent; color: #2b579a; font-size: 17px; cursor: pointer; }
+.details-button:hover, .details-button:focus-visible { border-color: #2b579a; outline: none; }
+.footer-note { margin: 25px 0 0; color: #999995; font-size: 11px; }
+@media (max-width: 600px) { .topbar { padding: 0 20px; } .content { padding-top: 48px; } h1 { font-size: 36px; } .meeting { grid-template-columns: 1fr 34px; gap: 12px; padding: 20px 0; } .meeting-date { grid-column: 1 / -1; flex-direction: row; gap: 10px; } .details-button { grid-column: 2; grid-row: 2; } .meeting-info { grid-column: 1; grid-row: 2; } }
