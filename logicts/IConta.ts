@@ -2,7 +2,7 @@ export default interface IConta {
 
     depositar(valor: number): number;
     sacar(valor: number): number;
-    saldo(): number;
+    saldos(): number;
 
 
 }

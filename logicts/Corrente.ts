@@ -3,24 +3,22 @@ import IContas, {IAbrir, ICliente} from './IConta';
 
 export default class Corrente extends Conta implements IContas, IAbrir{
 
-
-
     AbrirConta (cli: ICliente): void {
         this.nome = cli._nome;
-        this._cpf = cli._cpf;
+        this.cpf = cli._cpf;
         this.endereco = cli._endereco;
         this.email = cli._email;
     }
     depositar (valor: number): number {
-        this.deposito = valor;
-        return history.saldos() + this.deposito;
+        this.deposito += valor;
+        return this.saldos();
     }
     sacar (valor: number): number {
         this.saque = valor;
         return this.saldos() - this.saque;
     }
-    saldo (): number {
-        throw new Error ('Method not implemented.');
+    saldos (): number {
+        return this.saldo;
     }
 
 
