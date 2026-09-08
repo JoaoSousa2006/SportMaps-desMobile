@@ -1,69 +1,177 @@
-//import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-//import heroImg from './assets/hero.png'
-import './App.css'
-import meunome from "./assets/forme"
+import { useState } from "react";
+import "./App.css";
 
 function App() {
+  const [modalidade, setModalidade] = useState("Skate");
+
+  const locais = [
+    {
+      modalidade: "Skate",
+      nome: "Pista de Skate Vila Bocaina",
+      distancia: "A 450 m de você",
+      cidade: "Mauá, SP",
+      nota: "4.8",
+      imagem:
+        "https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?auto=format&fit=crop&w=300&q=80",
+    },
+    {
+      modalidade: "Corrida",
+      nome: "Parque Linear do Guaíba",
+      distancia: "A 1.2 km de você",
+      cidade: "Mauá, SP",
+      nota: "4.5",
+      imagem:
+        "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=300&q=80",
+    },
+  ];
 
   return (
-    <>
-      <header>
-        <div className="logo">SPORT-MAPS</div>
-        <input className="search" placeholder="Buscar endereço, bairro ou cidade..."/> 
-        <nav>
-          <span>Explorar</span>
-          <span>Favoritos</span>
-          <span>Carrinho</span>
+    <div className="app">
+      {/* HEADER */}
+      <header className="header">
+        <div className="logo">
+          <div className="logo-icon">⌾</div>
+          <span>SPORT-MAPS</span>
+        </div>
+
+        <div className="search-container">
+          <span className="search-icon">⌕</span>
+
+          <input
+            className="search"
+            placeholder="Buscar endereço, bairro ou cidade..."
+          />
+
+          <span className="search-location">⌖</span>
+        </div>
+
+        <nav className="nav">
+          <div className="nav-item active">
+            <span>⌾</span>
+            Explorar
+          </div>
+
+          <div className="nav-item">
+            <span>♡</span>
+            Favoritos
+          </div>
+
+          <div className="nav-item cart">
+            <span>🛒</span>
+            <small>3</small>
+            Carrinho
+          </div>
+
           <div className="user">
-            <div className="avatar"></div>
-            <span>Usuário</span>
+            <div className="avatar">LP</div>
+
+            <div className="user-info">
+              <strong>Lucas Pereira</strong>
+              <span>Atleta Bronze</span>
+            </div>
           </div>
         </nav>
       </header>
 
-      <div className="layout">
+      {/* CONTEÚDO */}
+      <main className="layout">
+        {/* SIDEBAR */}
+        <aside className="sidebar">
+          <section>
+            <h3>Escolha sua Modalidade</h3>
 
-        <aside>
-          <h3>Escolha sua Modalidade</h3>
-          <div className="filters">
-            <button className="filter-btn active">Skate</button>
-            <button className="filter-btn">Corrida</button>
-            <button className="filter-btn">Patins</button>
-            <button className="filter-btn">Basquete</button>
-          </div>
+            <div className="filters">
+              {["Skate", "Corrida", "Patins", "Basquete"].map((item) => (
+                <button
+                  key={item}
+                  className={`filter-btn ${
+                    modalidade === item ? "active" : ""
+                  }`}
+                  onClick={() => setModalidade(item)}
+                >
+                  <span className="filter-icon">
+                    {item === "Skate" && "●"}
+                    {item === "Corrida" && "⌁"}
+                    {item === "Patins" && "▥"}
+                    {item === "Basquete" && "◉"}
+                  </span>
 
-          <div className="list-header">
-            <h3>Locais Próximos</h3>
-            <a href="#">Ver em lista</a>
-          </div>
-
-          <div className="place-card">
-            {/* <img src=""> */}
-            <div className="place-info">
-              <div className="place-tag">Skate</div>
-              <div className="place-name">Nome do local</div>
-              <div className="place-meta">Distância · Cidade</div>
+                  {item}
+                </button>
+              ))}
             </div>
-          </div>
+          </section>
 
-          <div className="place-card">
-            {/* <img src=""> */}
-            <div className="place-info">
-              <div className="place-tag">Corrida</div>
-              <div className="place-name">Nome do local</div>
-              <div className="place-meta">Distância · Cidade</div>
+          <div className="divider" />
+
+          {/* LISTA */}
+          <section>
+            <div className="list-header">
+              <h3>Locais Próximos</h3>
+              <a href="#lista">Ver em lista</a>
             </div>
-          </div>
+
+            <div className="places">
+              {locais.map((local, index) => (
+                <div className="place-card" key={index}>
+                  <img src={local.imagem} alt={local.nome} />
+
+                  <div className="place-info">
+                    <div className="place-top">
+                      <span className="place-tag">
+                        {local.modalidade}
+                      </span>
+
+                      <span className="rating">
+                        ★ {local.nota}
+                      </span>
+                    </div>
+
+                    <div className="place-name">{local.nome}</div>
+
+                    <div className="place-meta">
+                      <span>⌖</span>
+                      {local.distancia} · {local.cidade}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
         </aside>
 
-        <div className="map" id="map">
-        </div>
+        {/* MAPA */}
+        <section className="map">
+          {/* Ruas */}
+          <div className="road road-horizontal road-1" />
+          <div className="road road-horizontal road-2" />
+          <div className="road road-vertical road-1-v" />
+          <div className="road road-vertical road-2-v" />
 
-      </div>
-    </>
-  )
+          {/* Área azul */}
+          <div className="water" />
+
+          {/* Áreas verdes */}
+          <div className="park park-1" />
+          <div className="park park-2" />
+
+          {/* Marcador principal */}
+          <div className="map-marker main-marker">
+            <span>〽</span>
+          </div>
+
+          {/* Outros marcadores */}
+          <div className="map-marker secondary-marker marker-1">
+            <span>×</span>
+          </div>
+
+          <div className="map-marker secondary-marker marker-2">
+            <span>×</span>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
