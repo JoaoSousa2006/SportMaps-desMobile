@@ -3,14 +3,18 @@ import IContas, {IAbrir, ICliente} from './IConta';
 
 
 export default class Poupanca extends Conta implements IContas {
+    
     depositar(valor: number): number {
-        throw new Error('Method not implemented.');
+        this.saldo += valor;
+        return this.saldo;
     }
+    
     sacar(valor: number): number {
-        throw new Error('Method not implemented.');
+        this.saldo -= valor;
+        return valor;
     }
     saldos(): number {
-        throw new Error('Method not implemented.');
+        return this.saldo;
     }
 
 }
