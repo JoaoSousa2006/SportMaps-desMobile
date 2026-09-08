@@ -1,7 +1,9 @@
+import Corrente from "./Corrente";
 import Poupanca from "./Poupanca";
 import Salario from "./Salario";
 
 class Principal {
+    
     teste: string = "";
     
     main(): void{
@@ -11,8 +13,11 @@ class Principal {
         
         cs.saldo = 50.0;
 
-        cs.depositar(250.13);
+       cpouipe.depositar(cs.saldo);
 
+        ccore.saldo = 30.4;
+        
+        cs.depositar(250.13);
 
         console.log("Depositar após depósito: " + cs.saldos())
 
@@ -23,3 +28,6 @@ class Principal {
 
     }
 }
+
+const app = new Principal();
+app.main();
