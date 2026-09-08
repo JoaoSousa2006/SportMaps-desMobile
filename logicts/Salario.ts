@@ -1,19 +1,27 @@
 import Conta from './Conta'
 import IContas, {IAbrir, ICliente} from './IConta';
 
-export default class Salario extends Conta implements IContas{
+export default class Salario extends Conta implements IContas, IAbrir {
     
-    abrirconta(cli:ICliente): void{
-        throw new Error('Method not implemented.')
-    }
+     abrirconta(cli: ICliente): void {
+        this.nome = cli._nome;
+        this.cpf = cli._cpf;
+        this.endereco = cli._endereco;
+        this.email = cli._email;
+    } 
     depositar(valor: number): number {
-        throw new Error('Method not implemented.')
+        
+        this.saldo += valor;
+        return this.saldo;       
     }
     sacar(valor: number): number {
-        throw new Error('Method not implemented.')
+        
+        this.saldo -= valor;
+        return valor;
     }
-    saldos(valor: number): number {
-        throw new Error('Method not implemented.')
+    saldos(): number {
+         return this.saldo;
     }
+
 
 }
