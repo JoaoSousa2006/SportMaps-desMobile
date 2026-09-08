@@ -1,6 +1,5 @@
 import Conta from './Conta';
-import IContas, {IAbrir, ICliente} from './IConta';
-
+import IContas from './IConta';
 
 export default class Poupanca extends Conta implements IContas {
     
