@@ -4,10 +4,9 @@ export default interface IConta {
     sacar(valor: number): number;
     saldos(): number;
 
-
 }
 
-interface ICliente {
+export interface ICliente {
     _nome: string;
     _endereco: string;
     _cpf: string;
