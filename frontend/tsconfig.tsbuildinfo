@@ -1,0 +1,1 @@
+{"root":["./src/AppRoot.tsx","./src/main.tsx","./src/types.ts","./src/vite-env.d.ts","./src/components/MapView.tsx","./src/data/places.ts","./src/pages/AccountPage.tsx","./src/pages/CartPage.tsx","./src/pages/ExplorePage.tsx","./src/pages/FavoritesPage.tsx","./src/pages/PlaceDetailsPage.tsx","./src/services/api.ts"],"errors":true,"version":"5.9.3"}

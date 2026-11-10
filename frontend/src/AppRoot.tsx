@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import "./App.css";
 import { AccountPage } from "./pages/AccountPage";
@@ -7,7 +7,11 @@ import { ExplorePage } from "./pages/ExplorePage";
 import { FavoritesPage } from "./pages/FavoritesPage";
 import { PlaceDetailsPage } from "./pages/PlaceDetailsPage";
 import { places, products } from "./data/places";
-import type { Page, Place, Sport } from "./types";
+import { apiGet, apiPost, apiPut } from "./services/api";
+import type { Page, Place, Sport, User } from "./types";
+
+type AuthResponse = { user: User; cart: Record<number, number> };
+type SessionResponse = { user: User | null; cart: Record<number, number> };
 
 export default function App() {
   const [page, setPage] = useState<Page>("explore");
@@ -22,9 +26,25 @@ export default function App() {
       return [];
     }
   });
-  const [cart, setCart] = useState<Record<number, number>>({ 1: 1, 2: 1, 3: 2 });
-  const [user, setUser] = useState<string | null>(null);
+  const [cart, setCart] = useState<Record<number, number>>({});
+  const cartRef = useRef(cart);
+  const cartSaveQueue = useRef<Promise<unknown>>(Promise.resolve());
+  const [user, setUser] = useState<User | null>(null);
   const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    apiGet<SessionResponse>("/auth/session")
+      .then(({ user: sessionUser, cart: sessionCart }) => {
+        setUser(sessionUser);
+        setEmail(sessionUser?.email || "");
+        cartRef.current = sessionCart;
+        setCart(sessionCart);
+      })
+      .catch(() => {
+        cartRef.current = {};
+        setCart({});
+      });
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("sportmaps-favorites", JSON.stringify(favorites));
@@ -59,16 +79,50 @@ export default function App() {
   };
 
   const changeQuantity = (id: number, delta: number) => {
-    setCart((current) => ({
-      ...current,
-      [id]: Math.max(0, (current[id] || 0) + delta),
-    }));
+    const nextCart = {
+      ...cartRef.current,
+      [id]: Math.max(0, (cartRef.current[id] || 0) + delta),
+    };
+    cartRef.current = nextCart;
+    setCart(nextCart);
+    if (user) {
+      cartSaveQueue.current = cartSaveQueue.current
+        .then(() => apiPut("/cart", { cart: nextCart }))
+        .catch((error: unknown) => console.error("Não foi possível salvar o carrinho:", error));
+    }
   };
 
-  const submitAuth = (name: string, nextEmail: string) => {
-    setUser(name.trim() || nextEmail.split("@")[0] || "Usuário");
-    setEmail(nextEmail);
+  const removeFromCart = (id: number) => {
+    const nextCart = { ...cartRef.current, [id]: 0 };
+    cartRef.current = nextCart;
+    setCart(nextCart);
+    if (user) {
+      cartSaveQueue.current = cartSaveQueue.current
+        .then(() => apiPut("/cart", { cart: nextCart }))
+        .catch((error: unknown) => console.error("Não foi possível salvar o carrinho:", error));
+    }
+  };
+
+  const submitAuth = async (mode: "login" | "register", name: string, nextEmail: string, password: string) => {
+    await cartSaveQueue.current;
+    const result = await apiPost<AuthResponse>(`/auth/${mode}`, { name, email: nextEmail, password });
+    setUser(result.user);
+    setEmail(result.user.email);
+    cartRef.current = result.cart;
+    setCart(result.cart);
     navigate("explore");
+  };
+
+  const signOut = async () => {
+    try {
+      await cartSaveQueue.current;
+      await apiPost("/auth/logout");
+    } finally {
+      setUser(null);
+      setEmail("");
+      cartRef.current = {};
+      setCart({});
+    }
   };
 
   return (
@@ -97,8 +151,8 @@ export default function App() {
             Carrinho <span className="nav-count">{count}</span>
           </button>
           <button className={`user-pill ${page === "account" ? "nav-active" : ""}`} onClick={() => navigate("account")}>
-            <span className="avatar">{user ? user[0].toUpperCase() : "U"}</span>
-            {user || "Entrar"}
+            <span className="avatar">{user ? user.name[0].toUpperCase() : "U"}</span>
+            {user?.name || "Entrar"}
           </button>
         </nav>
       </header>
@@ -153,7 +207,7 @@ export default function App() {
           products={products}
           cart={cart}
           onQuantityChange={changeQuantity}
-          onRemove={(id) => setCart((current) => ({ ...current, [id]: 0 }))}
+          onRemove={removeFromCart}
           onContinue={() => navigate("explore")}
         />
       )}
@@ -162,10 +216,7 @@ export default function App() {
           user={user}
           email={email}
           onSubmit={submitAuth}
-          onSignOut={() => {
-            setUser(null);
-            setEmail("");
-          }}
+          onSignOut={signOut}
           onExplore={() => navigate("explore")}
         />
       )}

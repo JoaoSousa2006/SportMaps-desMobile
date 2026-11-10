@@ -1,6 +1,7 @@
 export type Sport = "Skate" | "Corrida" | "Patins" | "Basquete";
 export type Page = "explore" | "favorites" | "details" | "cart" | "account";
 export type AuthMode = "login" | "register" | "forgot";
+export type User = { id: string; name: string; email: string };
 
 export type Place = {
   id: number;
