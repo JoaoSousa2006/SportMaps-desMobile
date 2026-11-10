@@ -24,7 +24,7 @@ bun run dev
 
 Em outro terminal, na raiz do projeto:
 
-cd web
+cd frontend
 npm install
 npm run dev
 
