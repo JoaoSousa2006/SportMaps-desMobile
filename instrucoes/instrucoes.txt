@@ -1,0 +1,37 @@
+## Executar localmente
+
+##O projeto tem frontend e backend separados. Inicie cada um em um terminal.
+
+### Backend
+
+##O backend usa Bun. Se `bun` não estiver instalado, instale-o e recarregue o Bash:
+
+##bash
+curl -fsSL https://bun.sh/install | bash
+source ~/.bashrc
+
+
+##Na primeira execução, instale as dependências. Copie o arquivo de ambiente apenas se ainda não existir:
+
+cd backend
+if [[ ! -f .env ]]; then cp .env.example .env; fi
+bun install
+bun run dev
+
+##O `bun run dev` inicia a API em `http://localhost:3000` e aplica automaticamente as migrations do SQLite. Não é necessário executar `bun run db:migrate` para iniciar o backend nesse fluxo.
+
+### Frontend
+
+Em outro terminal, na raiz do projeto:
+
+cd web
+npm install
+npm run dev
+
+#Abra a URL exibida pelo Vite, normalmente `http://localhost:5173`. O proxy do Vite encaminha as chamadas `/api` para o backend na porta 3000. Mantenha os dois terminais em execução enquanto usa a aplicação.
+
+
+
+
+
+
